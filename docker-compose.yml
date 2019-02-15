@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./services/php/dev/Dockerfile
+    image: feeder_php_714:latest
+    container_name: feeder_php_714
+    working_dir: /var/www/html/bin
+    networks:
+      - feeder
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www/html
+      - ./services/php/dev/php.ini:/usr/local/etc/php/php.ini
+
+  nginx:
+    networks:
+      - feeder
+    depends_on:
+      - php
+    image: nginx:latest
+    working_dir: /var/www/html
+    ports:
+      - "8182:8182"
+      - "3131:3131"
+    volumes:
+      - .:/var/www/html
+      - ./services/proxy/dev:/etc/nginx/conf.d
+      - ./var/logs/nginx:/var/log/nginx
+
+networks:
+  feeder:

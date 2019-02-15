@@ -1,0 +1,35 @@
+{
+  "name": "gubarev/feeder",
+  "description": "Feeds getter from different streams",
+  "authors": [
+    {
+      "name": "Gubarev",
+      "email": "alex.gubarev.web@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "~7.1",
+    "symfony/dependency-injection": "~3.0",
+    "symfony/config": "~3.0",
+    "symfony/yaml": "~3.0",
+    "fennb/phirehose": "~1.0",
+    "monolog/monolog": "~1.0",
+    "cboden/ratchet": "^0.4.1",
+    "textalk/websocket": "1.0.*",
+    "symfony/event-dispatcher": "^4.1"
+  },
+  "require-dev": {
+    "symfony/dotenv": "^4.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Feeder\\": "src/"
+    },
+    "classmap": [
+      "vendor/fennb/phirehose/lib"
+    ]
+  },
+  "autoload-dev": {
+
+  }
+}

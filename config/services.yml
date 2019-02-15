@@ -1,0 +1,44 @@
+parameters:
+
+    twitter_access_token: "%env(TWITTER_ACCESS_TOKEN)%"
+    twitter_access_token_secret: "%env(TWITTER_ACCESS_TOKEN_SECRET)%"
+    twitter_consumer_key: "%env(TWITTER_CONSUMER_KEY)%"
+    twitter_consumer_secret: "%env(TWITTER_CONSUMER_SECRET)%"
+
+    twitter_stream_ids:
+        - 240195591
+        - 240195592
+
+services:
+
+    app:
+        class: Feeder\App
+        arguments: ['@feed.manager']
+
+    feed.manager:
+        class: Feeder\Manager\FeedManager
+        calls:
+            - [addFeedAdapter, ['@feed.twitter_stream_adapter']]
+
+    feed.stream_handler:
+        class: Feeder\Service\FeedHandlerStreamer
+        lazy:  true
+
+    feed.twitter_stream:
+        class: Feeder\Service\UserTwitterStream
+        arguments: ['@feed.stream_handler', '%twitter_access_token%', '%twitter_access_token_secret%', '%twitter_consumer_key%', '%twitter_consumer_secret%', '%twitter_stream_ids%']
+        lazy:  true
+
+    feed.mock_twitter_stream:
+        class: Feeder\Service\MockUserTwitterStream
+        lazy:  true
+
+    feed.twitter_stream_adapter:
+        class: Feeder\Adapter\TwitterStreamAdapter
+        arguments: ['@feed.mock_twitter_stream']
+        lazy:  true
+
+    chat:
+        class: Feeder\Service\Chat
+
+

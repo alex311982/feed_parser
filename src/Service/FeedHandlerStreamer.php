@@ -3,12 +3,16 @@
 namespace Feeder\Service;
 
 
-use Feeder\Contract\FeedHandlerInterface;
+use Feeder\Event\TwitterFeedEvent;
+use WebSocket\Client;
 
-class FeedHandlerStreamer implements FeedHandlerInterface
+class FeedHandlerStreamer
 {
-    public function handle(?string $feed)
+    public function onFeedUpdate(TwitterFeedEvent $event)
     {
-        echo $feed;
+        $feed = $event->getTwitterFeed();
+
+        $client = new Client("ws://127.0.0.1:3535");
+        $client->send($feed);
     }
 }

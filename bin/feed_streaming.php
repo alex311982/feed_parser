@@ -1,6 +1,6 @@
 <?php
 
-use Feeder\Service\Chat;
+use Feeder\Service\FeedServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -11,12 +11,12 @@ ini_set('display_errors', 1);
 try {
     require __DIR__.'/../bootstrap.php';
 
-    $chat = $container->get('chat');
+    $feedStreamServer = $container->get('feed.stream_server');
 
     $server = IoServer::factory(
         new HttpServer(
             new WsServer(
-                $chat
+                $feedStreamServer
             )
         ),
         3535

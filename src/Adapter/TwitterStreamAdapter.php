@@ -11,18 +11,22 @@ namespace Feeder\Adapter;
 
 use Feeder\Contract\FeedAdapterInterface;
 use Feeder\Contract\TwitterStreamInterface;
-use Feeder\Service\UserTwitterStream;
 
+/**
+ * Class TwitterStreamAdapter
+ * @package Feeder\Adapter
+ */
 class TwitterStreamAdapter implements FeedAdapterInterface
 {
     /**
-     * @var UserTwitterStream
+     * @var string
      */
     protected $twitterStream;
 
-    public function __construct(TwitterStreamInterface $twitterStream)
+    public function __construct(TwitterStreamInterface $twitterStream, EventDispatcherInterface $eventDispatcher)
     {
         $this->twitterStream = $twitterStream;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getFeed()

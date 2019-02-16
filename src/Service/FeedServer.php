@@ -12,11 +12,8 @@ namespace Feeder\Service;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 
-/**
- * chat.php
- * Send any incoming messages to all connected clients (except sender)
- */
-class Chat implements MessageComponentInterface {
+class FeedServer implements MessageComponentInterface {
+
     protected $clients;
 
     public function __construct() {

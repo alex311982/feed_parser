@@ -6,19 +6,20 @@
  * Time: 19:55
  */
 
-namespace Feeder\Service;
+namespace Feeder\Listener;
 
-use Feeder\Contract\FeedHandlerInterface;
+use Feeder\Event\TwitterFeedEvent;
 use Feeder\Contract\TwitterStreamInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OauthPhirehose;
 use Phirehose;
 
-class UserTwitterStream extends OauthPhirehose implements TwitterStreamInterface
+class UserTwitterStreamListener extends OauthPhirehose implements TwitterStreamInterface
 {
     /**
-     * @var FeedHandlerInterface
+     * @var EventDispatcherInterface
      */
-    protected $feedHandler;
+    protected $eventDispatcher;
 
     protected $twitterConsumerKey;
 
@@ -27,14 +28,14 @@ class UserTwitterStream extends OauthPhirehose implements TwitterStreamInterface
     protected $trackIds;
 
     public function __construct(
-        FeedHandlerInterface $feedHandler,
+        EventDispatcherInterface $eventDispatcher,
         ?string $twitterAccessToken,
         ?string $twitterAccessTokenSecret,
         ?string $twitterConsumerKey,
         ?string $twitterConsumerSecret,
         ?array $trackIds
     ) {
-        $this->feedHandler = $feedHandler;
+        $this->eventDispatcher = $eventDispatcher;
         $this->twitterConsumerKey = $twitterConsumerKey;
         $this->twitterConsumerSecret = $twitterConsumerSecret;
         $this->trackIds = $trackIds;
@@ -57,6 +58,7 @@ class UserTwitterStream extends OauthPhirehose implements TwitterStreamInterface
      */
     public function enqueueStatus($status)
     {
-        $this->feedHandler->handle($status);
+        $event = new TwitterFeedEvent($status);
+        $this->eventDispatcher->dispatch('twitter.feed_update', $event);
     }
 }

@@ -10,6 +10,7 @@ namespace Feeder\Service;
 
 
 use Feeder\Contract\TwitterStreamInterface;
+use Feeder\Event\TwitterFeedEvent;
 use WebSocket\Client;
 
 class MockUserTwitterStream implements TwitterStreamInterface

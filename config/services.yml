@@ -25,12 +25,14 @@ services:
         lazy:  true
 
     feed.twitter_stream:
-        class: Feeder\Service\UserTwitterStream
-        arguments: ['@feed.stream_handler', '%twitter_access_token%', '%twitter_access_token_secret%', '%twitter_consumer_key%', '%twitter_consumer_secret%', '%twitter_stream_ids%']
+        class: Feeder\Listner\UserTwitterStreamListener
+        arguments: ['@event_dispatcher', '@feed.stream_handler', '%twitter_access_token%', '%twitter_access_token_secret%', '%twitter_consumer_key%', '%twitter_consumer_secret%', '%twitter_stream_ids%']
         lazy:  true
+        tags:
+            - { name: kernel.event_listener, event: twitter.feed_update, method: onFeedUpdate }
 
     feed.mock_twitter_stream:
-        class: Feeder\Service\MockUserTwitterStream
+        class: Feeder\Subscriber\MockUserTwitterStreamSubscriber
         lazy:  true
 
     feed.twitter_stream_adapter:
@@ -38,7 +40,7 @@ services:
         arguments: ['@feed.mock_twitter_stream']
         lazy:  true
 
-    chat:
-        class: Feeder\Service\Chat
+    feed.stream_server:
+        class: Feeder\Service\FeedServer
 
 

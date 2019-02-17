@@ -1,20 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 15.02.19
- * Time: 18:03
- */
 
 namespace Feeder\Event;
 
 use Feeder\Entity\Tweet;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class TwitterFeedEvent
+ * @package Feeder\Event
+ */
 final class TwitterFeedEvent extends Event
 {
+    /**
+     * @var Tweet|null
+     */
     protected $twitterFeed;
 
+    /**
+     * TwitterFeedEvent constructor.
+     * @param Tweet|null $feed
+     */
     public function __construct(?Tweet $feed)
     {
         $this->twitterFeed = $feed;

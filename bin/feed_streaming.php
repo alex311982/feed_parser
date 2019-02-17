@@ -5,12 +5,10 @@ use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 try {
     require __DIR__.'/../bootstrap.php';
 
+    /** @var FeedServer $feedStreamServer */
     $feedStreamServer = $container->get('feed.stream_server');
 
     $server = IoServer::factory(
@@ -23,7 +21,6 @@ try {
     );
 
     $server->run();
-} catch (\Exception $e) {
-    echo $e->getMessage();
-    echo PHP_EOL;
+} catch (\Throwable $e) {
+    $container->get('app.logger')->err($e->getCode() . ':' . $e->getFile() . ':' . $e->getLine() . ':' . $e->getMessage());
 }

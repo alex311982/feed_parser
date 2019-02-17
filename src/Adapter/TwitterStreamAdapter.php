@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 13.02.19
- * Time: 19:53
- */
 
 namespace Feeder\Adapter;
 
 
-use Feeder\Contract\FeedAdapterInterface;
-use Feeder\Contract\TwitterStreamInterface;
+use Feeder\Contract\{FeedAdapterInterface, TwitterStreamInterface};
 
 /**
  * Class TwitterStreamAdapter
@@ -19,7 +12,7 @@ use Feeder\Contract\TwitterStreamInterface;
 class TwitterStreamAdapter implements FeedAdapterInterface
 {
     /**
-     * @var string
+     * @var TwitterStreamInterface
      */
     protected $twitterStream;
 

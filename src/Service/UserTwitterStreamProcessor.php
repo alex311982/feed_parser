@@ -8,11 +8,8 @@
 
 namespace Feeder\Service;
 
-use Feeder\DTO\TweetDTO;
-use Feeder\Event\TwitterFeedEvent;
-use Feeder\Contract\TwitterStreamInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Feeder\{DTO\TweetDTO, Event\TwitterFeedEvent, Contract\TwitterStreamInterface, Logger\LoggerTrait};
+use Symfony\Component\{DependencyInjection\ParameterBag\ParameterBagInterface, EventDispatcher\EventDispatcherInterface};
 use OauthPhirehose;
 use Phirehose;
 
@@ -22,6 +19,8 @@ use Phirehose;
  */
 class UserTwitterStreamProcessor extends OauthPhirehose implements TwitterStreamInterface
 {
+    use LoggerTrait;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -80,10 +79,13 @@ class UserTwitterStreamProcessor extends OauthPhirehose implements TwitterStream
      */
     public function enqueueStatus($status)
     {
-        echo $status;
+        $this->getLogger()->info($status);
 
         $feed = $this->tweetAssembler->readDTO(new TweetDTO($status));
-        $event = new TwitterFeedEvent($feed);
-        $this->eventDispatcher->dispatch('twitter.feed_update', $event);
+
+        if ($feed->getId()) {
+            $event = new TwitterFeedEvent($feed);
+            $this->eventDispatcher->dispatch('twitter.feed_update', $event);
+        }
     }
 }

@@ -28,6 +28,8 @@ services:
     feed.twitter_stream:
         class: Feeder\Service\UserTwitterStreamProcessor
         arguments: ['@symfony.event_dispatcher', '@feed.tweet_assembler', '@app.parameterBag', '%twitter_stream_ids%']
+        calls:
+            - [setLogger, ['@app.logger']]
         lazy:  true
 
     feed.twitter_stream_adapter:

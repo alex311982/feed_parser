@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 17.02.19
- * Time: 19:09
- */
 
 namespace Feeder\Service;
 
@@ -12,6 +6,10 @@ namespace Feeder\Service;
 use Feeder\DTO\TweetDTO;
 use Feeder\Entity\Tweet;
 
+/**
+ * Class TweetAssembler
+ * @package Feeder\Service
+ */
 class TweetAssembler
 {
     /**

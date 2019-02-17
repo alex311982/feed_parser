@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 14.02.19
- * Time: 16:26
- */
 
 namespace Feeder\Service;
 
@@ -12,36 +6,55 @@ namespace Feeder\Service;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 
+/**
+ * Class FeedServer
+ * @package Feeder\Service
+ */
 class FeedServer implements MessageComponentInterface {
 
+    /**
+     * @var \SplObjectStorage
+     */
     protected $clients;
 
+    /**
+     * FeedServer constructor.
+     */
     public function __construct() {
         $this->clients = new \SplObjectStorage;
     }
 
+    /**
+     * @param ConnectionInterface $conn
+     */
     public function onOpen(ConnectionInterface $conn) {
-        echo 'CONNECTED';
         $this->clients->attach($conn);
     }
 
+    /**
+     * @param ConnectionInterface $from
+     * @param string $msg
+     */
     public function onMessage(ConnectionInterface $from, $msg) {
-        echo 'MESSAGE';
         foreach ($this->clients as $client) {
-            echo 'SEND';
             if ($from != $client) {
                 $client->send($msg);
             }
         }
     }
 
+    /**
+     * @param ConnectionInterface $conn
+     */
     public function onClose(ConnectionInterface $conn) {
-        echo 'CLOSE';
         $this->clients->detach($conn);
     }
 
+    /**
+     * @param ConnectionInterface $conn
+     * @param \Exception $e
+     */
     public function onError(ConnectionInterface $conn, \Exception $e) {
-        echo 'ERROR';
         $conn->close();
     }
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alex
- * Date: 17.02.19
- * Time: 19:08
- */
 
 namespace Feeder\Entity;
 

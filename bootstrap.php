@@ -1,9 +1,13 @@
 <?php
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -29,3 +33,27 @@ $container->set(
     'app.container',
     $container
 );
+
+$container->set(
+    'app.parameterBag',
+    $container->getParameterBag()
+);
+
+$container->setParameter('twitter_access_token', getenv('TWITTER_ACCESS_TOKEN'));
+$container->setParameter('twitter_access_token_secret', getenv('TWITTER_ACCESS_TOKEN_SECRET'));
+$container->setParameter('twitter_consumer_key', getenv('TWITTER_CONSUMER_KEY'));
+$container->setParameter('twitter_consumer_secret', getenv('TWITTER_CONSUMER_SECRET'));
+
+$encoders = [new JsonEncoder()];
+$normalizers = [new ObjectNormalizer()];
+
+$serializer = new Serializer($normalizers, $encoders);
+
+$container->set(
+    'app.serializer',
+    $serializer
+);
+
+$container->compile();
+
+$container->get('symfony.event_dispatcher')->addListener('twitter.feed_update', $container->get('feed.twitter_stream_handler_listener'));

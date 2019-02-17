@@ -16,7 +16,9 @@
     "monolog/monolog": "~1.0",
     "cboden/ratchet": "^0.4.1",
     "textalk/websocket": "1.0.*",
-    "symfony/event-dispatcher": "^4.1"
+    "symfony/event-dispatcher": "^4.1",
+    "symfony/serializer": "^4",
+    "symfony/property-access": "^4"
   },
   "require-dev": {
     "symfony/dotenv": "^4.1"

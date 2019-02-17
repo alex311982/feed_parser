@@ -1,13 +1,9 @@
 parameters:
 
-    twitter_access_token: "%env(TWITTER_ACCESS_TOKEN)%"
-    twitter_access_token_secret: "%env(TWITTER_ACCESS_TOKEN_SECRET)%"
-    twitter_consumer_key: "%env(TWITTER_CONSUMER_KEY)%"
-    twitter_consumer_secret: "%env(TWITTER_CONSUMER_SECRET)%"
-
     twitter_stream_ids:
-        - 240195591
-        - 240195592
+        - 1096369709430255617
+
+    stream_url: ws://127.0.0.1:3535
 
 services:
 
@@ -20,27 +16,28 @@ services:
         calls:
             - [addFeedAdapter, ['@feed.twitter_stream_adapter']]
 
-    feed.stream_handler:
-        class: Feeder\Service\FeedHandlerStreamer
+    feed.twitter_stream_handler_listener:
+        class: Feeder\Listener\FeedHandlerStreamerListener
+        arguments: ['@app.serializer', '@app.parameterBag']
         lazy:  true
+
+    feed.tweet_assembler:
+      class: Feeder\Service\TweetAssembler
+      lazy:  true
 
     feed.twitter_stream:
-        class: Feeder\Listner\UserTwitterStreamListener
-        arguments: ['@event_dispatcher', '@feed.stream_handler', '%twitter_access_token%', '%twitter_access_token_secret%', '%twitter_consumer_key%', '%twitter_consumer_secret%', '%twitter_stream_ids%']
-        lazy:  true
-        tags:
-            - { name: kernel.event_listener, event: twitter.feed_update, method: onFeedUpdate }
-
-    feed.mock_twitter_stream:
-        class: Feeder\Subscriber\MockUserTwitterStreamSubscriber
+        class: Feeder\Service\UserTwitterStreamProcessor
+        arguments: ['@symfony.event_dispatcher', '@feed.tweet_assembler', '@app.parameterBag', '%twitter_stream_ids%']
         lazy:  true
 
     feed.twitter_stream_adapter:
         class: Feeder\Adapter\TwitterStreamAdapter
-        arguments: ['@feed.mock_twitter_stream']
+        arguments: ['@feed.twitter_stream']
         lazy:  true
 
     feed.stream_server:
         class: Feeder\Service\FeedServer
 
+    symfony.event_dispatcher:
+        class: Symfony\Component\EventDispatcher\EventDispatcher
 

@@ -23,10 +23,9 @@ class TwitterStreamAdapter implements FeedAdapterInterface
      */
     protected $twitterStream;
 
-    public function __construct(TwitterStreamInterface $twitterStream, EventDispatcherInterface $eventDispatcher)
+    public function __construct(TwitterStreamInterface $twitterStream)
     {
         $this->twitterStream = $twitterStream;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getFeed()

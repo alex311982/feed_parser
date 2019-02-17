@@ -8,21 +8,22 @@
 
 namespace Feeder\Event;
 
+use Feeder\Entity\Tweet;
 use Symfony\Component\EventDispatcher\Event;
 
 final class TwitterFeedEvent extends Event
 {
     protected $twitterFeed;
 
-    public function __construct(?string $feed)
+    public function __construct(?Tweet $feed)
     {
         $this->twitterFeed = $feed;
     }
 
     /**
-     * @return int
+     * @return Tweet|null
      */
-    public function getTwitterFeed(): ?string
+    public function getTwitterFeed(): ?Tweet
     {
         return $this->twitterFeed;
     }

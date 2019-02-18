@@ -8,3 +8,8 @@
 На разных  вкладках терминала:
 * docker-compose exec php_stream php feed_streaming.php
 * docker-compose exec php_stream php get_feed.php
+
+Поднятие фронта:
+
+* docker network inspect bridge | grep Gateway | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
+* В браузере набрать http://{ip}:3131, где ip - результат вывода команды выше

@@ -1,17 +1,16 @@
 version: '3'
 
 services:
-  php:
+
+  php_stream:
     build:
       context: .
       dockerfile: ./services/php/dev/Dockerfile
     image: feeder_php_714:latest
-    container_name: feeder_php_714
+    container_name: php_stream
     working_dir: /var/www/html/bin
     networks:
       - feeder
-    ports:
-      - "9000:9000"
     volumes:
       - .:/var/www/html
       - ./services/php/dev/php.ini:/usr/local/etc/php/php.ini
@@ -20,7 +19,7 @@ services:
     networks:
       - feeder
     depends_on:
-      - php
+      - php_stream
     image: nginx:latest
     working_dir: /var/www/html
     ports:

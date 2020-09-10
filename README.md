@@ -1,15 +1,20 @@
 ## Feeder test task
 
+The project contains code for getting messages from Twitter`s accounts and display them within browser`s page in real time .
+
+Steps to run project on local environment.
+
 * cp .env.dist .env
-* Скопировать данные из письма по ключам АПИ Твиттера
+* setup Twitter`s API keys in .env
 * docker run --rm -v $(pwd):/app prooph/composer:7.2 install
 * docker-compose up -d --build
 
-На разных  вкладках терминала:
+Run 2 tasks in different terminals:
 * docker-compose exec php_stream php feed_streaming.php
 * docker-compose exec php_stream php get_feed.php
 
-Поднятие фронта:
+Run front:
 
-* docker network inspect bridge | grep Gateway | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
-* В браузере набрать http://{ip}:3131, где ip - результат вывода команды выше
+* Get Docker`s local host IP
+docker network inspect bridge | grep Gateway | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
+* In browser navigate to url http://{IP}:3131, where {IP} is a result of running previous command

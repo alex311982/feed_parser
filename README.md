@@ -15,6 +15,6 @@ Run 2 tasks in different terminals:
 
 Run front:
 
-* Get Docker`s local host IP
+* Get Docker`s local host IP: 
 docker network inspect bridge | grep Gateway | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
 * In browser navigate to url http://{IP}:3131, where {IP} is a result of running previous command
